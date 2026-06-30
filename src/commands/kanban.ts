@@ -69,6 +69,6 @@ kanbanCommand
   .description('Mark a card as done')
   .argument('<id>', 'card id')
   .action(async (id: string) => {
-    const card = await client.updateCard(Number(id), { status: 'done' });
+    const card = await client.updateCard(id, { status: 'done' });
     console.log(chalk.green(`✓ Card #${card.id} marked as done.`));
   });

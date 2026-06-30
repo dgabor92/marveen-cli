@@ -15,11 +15,7 @@ export const statusCommand = new Command('status')
       head: [chalk.bold('Name'), chalk.bold('Status')],
     });
     for (const a of agents) {
-      // The API returns `runState` and `running` boolean; types.ts uses `status` — handle both
-      const raw = a as typeof a & { running?: boolean; runState?: string };
-      const isRunning = raw.running === true || raw.runState === 'running' || a.status === 'running';
-      const label = raw.runState ?? a.status;
-      const s = isRunning ? chalk.green(label) : chalk.gray(label);
+      const s = a.running ? chalk.green(a.runState) : chalk.gray(a.runState);
       agentTable.push([a.name, s]);
     }
     console.log(agentTable.toString());
