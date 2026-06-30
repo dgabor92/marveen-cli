@@ -1,0 +1,50 @@
+{
+  "name": "marveen-cli",
+  "version": "0.1.0",
+  "description": "TypeScript CLI for managing Marveen dashboard",
+  "author": "dgabor92",
+  "license": "MIT",
+  "homepage": "https://github.com/dgabor92/marveen-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dgabor92/marveen-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/dgabor92/marveen-cli/issues"
+  },
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    },
+    "./client": {
+      "import": "./dist/client/index.js",
+      "types": "./dist/client/index.d.ts"
+    }
+  },
+  "bin": {
+    "marveen": "./dist/index.js"
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
