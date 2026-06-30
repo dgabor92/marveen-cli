@@ -15,7 +15,8 @@ agentCommand
     if (result.ok) {
       console.log(chalk.green(`✓ Agent ${name} started.`));
     } else {
-      console.log(chalk.red(`✗ Failed to start agent ${name}.`));
+      console.error(chalk.red(`✗ Failed to start agent ${name}.`));
+      process.exit(1);
     }
   });
 
@@ -28,6 +29,7 @@ agentCommand
     if (result.ok) {
       console.log(chalk.green(`✓ Agent ${name} stopped.`));
     } else {
-      console.log(chalk.red(`✗ Failed to stop agent ${name}.`));
+      console.error(chalk.red(`✗ Failed to stop agent ${name}.`));
+      process.exit(1);
     }
   });

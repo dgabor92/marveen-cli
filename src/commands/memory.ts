@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import Table from 'cli-table3';
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 import { MarveenClient } from '../client/index.js';
 import type { MemoryCategory } from '../types.js';
 
@@ -13,7 +13,14 @@ memoryCommand
   .description('Search memories by keyword')
   .argument('<query>', 'search query')
   .option('--agent <agent>', 'filter by agent name')
-  .option('--category <category>', 'filter by category (hot|warm|cold|shared)')
+  .addOption(
+    new Option('--category <category>', 'filter by category').choices([
+      'hot',
+      'warm',
+      'cold',
+      'shared',
+    ]),
+  )
   .action(async (query: string, opts: { agent?: string; category?: MemoryCategory }) => {
     const memories = await client.listMemories({
       q: query,

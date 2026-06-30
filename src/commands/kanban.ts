@@ -1,6 +1,6 @@
 import chalk from 'chalk';
 import Table from 'cli-table3';
-import { Command } from 'commander';
+import { Command, Option } from 'commander';
 import { MarveenClient } from '../client/index.js';
 import type { KanbanStatus } from '../types.js';
 
@@ -24,7 +24,14 @@ export const kanbanCommand = new Command('kanban').description('Manage kanban ca
 kanbanCommand
   .command('list')
   .description('List kanban cards')
-  .option('--status <status>', 'filter by status (planned|in_progress|waiting|done)')
+  .addOption(
+    new Option('--status <status>', 'filter by status').choices([
+      'planned',
+      'in_progress',
+      'waiting',
+      'done',
+    ]),
+  )
   .action(async (opts: { status?: KanbanStatus }) => {
     const cards = await client.listCards();
     const filtered = opts.status ? cards.filter((c) => c.status === opts.status) : cards;
