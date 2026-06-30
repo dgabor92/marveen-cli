@@ -98,9 +98,15 @@ export class MarveenClient {
   // Memory
 
   async listMemories(params?: MemoryQueryParams): Promise<Memory[]> {
-    const qs = params
-      ? '?' + new URLSearchParams(params as Record<string, string>).toString()
-      : '';
+    let qs = '';
+    if (params) {
+      const p = new URLSearchParams();
+      if (params.agent) p.set('agent', params.agent);
+      if (params.q) p.set('q', params.q);
+      if (params.category) p.set('category', params.category);
+      const str = p.toString();
+      if (str) qs = '?' + str;
+    }
     return this.request<Memory[]>('GET', `/api/memories${qs}`);
   }
 
@@ -115,11 +121,11 @@ export class MarveenClient {
   }
 
   async startAgent(name: string): Promise<{ ok: boolean }> {
-    return this.request<{ ok: boolean }>('POST', `/api/agents/${name}/start`);
+    return this.request<{ ok: boolean }>('POST', `/api/agents/${encodeURIComponent(name)}/start`);
   }
 
   async stopAgent(name: string): Promise<{ ok: boolean }> {
-    return this.request<{ ok: boolean }>('POST', `/api/agents/${name}/stop`);
+    return this.request<{ ok: boolean }>('POST', `/api/agents/${encodeURIComponent(name)}/stop`);
   }
 
   // Schedules
