@@ -4,19 +4,23 @@ export type KanbanStatus = 'planned' | 'in_progress' | 'waiting' | 'done';
 export type KanbanPriority = 'low' | 'normal' | 'high' | 'urgent';
 
 export interface KanbanCard {
-  id: number;
+  id: string;
+  seq: number;
   title: string;
   description?: string;
   status: KanbanStatus;
   priority: KanbanPriority;
   assignee?: string;
-  created_at: string;
-  updated_at: string;
+  project?: string;
+  due_date?: string | null;
+  labels: string[];
+  created_at: number;
+  updated_at: number;
 }
 
 export interface KanbanComment {
   id: number;
-  card_id: number;
+  card_id: string;
   author: string;
   content: string;
   created_at: string;
@@ -67,13 +71,21 @@ export interface MemoryQueryParams {
 
 // Agents
 
-export type AgentStatus = 'running' | 'stopped' | 'unknown';
+export type AgentRunState = 'running' | 'stopped';
+export type AgentConfigStatus = 'configured';
 
 export interface Agent {
   name: string;
-  status: AgentStatus;
-  tmux_session?: string;
-  last_seen?: string;
+  displayName: string;
+  description: string;
+  model: string;
+  running: boolean;
+  runState: AgentRunState;
+  status: AgentConfigStatus;
+  runningSince?: number | null;
+  session?: string;
+  contextTokens?: number | null;
+  hasTelegram: boolean;
 }
 
 // Schedules

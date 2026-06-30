@@ -59,7 +59,7 @@ export class MarveenClient {
     return this.request<KanbanCard[]>('GET', '/api/kanban');
   }
 
-  async getCard(id: number): Promise<KanbanCard> {
+  async getCard(id: string): Promise<KanbanCard> {
     return this.request<KanbanCard>('GET', `/api/kanban/${id}`);
   }
 
@@ -67,7 +67,7 @@ export class MarveenClient {
     return this.request<KanbanCard>('POST', '/api/kanban', input);
   }
 
-  async updateCard(id: number, input: UpdateKanbanCardInput): Promise<KanbanCard> {
+  async updateCard(id: string, input: UpdateKanbanCardInput): Promise<KanbanCard> {
     return this.request<KanbanCard>('PUT', `/api/kanban/${id}`, input);
   }
 
