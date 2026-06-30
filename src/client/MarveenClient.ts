@@ -29,8 +29,12 @@ export class MarveenClient {
     await this.init();
 
     const url = `${this.baseUrl}${path}`;
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 10_000);
+
     const init: RequestInit = {
       method,
+      signal: controller.signal,
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${this.token}`,
@@ -39,9 +43,29 @@ export class MarveenClient {
     if (body !== undefined) {
       init.body = JSON.stringify(body);
     }
-    const res = await fetch(url, init);
 
-    const data = (await res.json()) as T | ApiError;
+    let res: Response;
+    try {
+      res = await fetch(url, init);
+    } catch (err) {
+      const isTimeout = err instanceof Error && err.name === 'AbortError';
+      throw new Error(
+        isTimeout
+          ? `Request timed out after 10s — is the dashboard running at ${this.baseUrl}?`
+          : `Network error: ${err instanceof Error ? err.message : String(err)}`,
+      );
+    } finally {
+      clearTimeout(timeout);
+    }
+
+    let data: T | ApiError;
+    try {
+      data = (await res.json()) as T | ApiError;
+    } catch {
+      throw new Error(
+        `API returned non-JSON response (HTTP ${res.status}) — unexpected server error or wrong URL`,
+      );
+    }
 
     if (!res.ok) {
       const err = data as ApiError;
