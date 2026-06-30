@@ -50,5 +50,6 @@ export async function getToken(): Promise<string> {
 
 export async function getBaseUrl(): Promise<string> {
   const config = await loadConfig();
-  return config.baseUrl ?? 'http://localhost:3420';
+  // Use 127.0.0.1 — Node 18 resolves "localhost" to ::1 (IPv6) but the dashboard binds only IPv4
+  return config.baseUrl ?? 'http://127.0.0.1:3420';
 }
